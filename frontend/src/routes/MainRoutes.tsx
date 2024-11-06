@@ -3,16 +3,15 @@ import { lazy } from "react";
 import React from "react";
 
 import { RouteObject } from "react-router-dom";
-
+import Loadable from "../components/third-party/Loadable";
 import MinimalLayout from "../layout/MinimallLayout";
 
-import Loadable from "../components/third-party/Loadable";
+
+
 
 const MainPages = Loadable(lazy(() => import("../pages/authentication/Login")));
 
-const Registerages = Loadable(
-    lazy(() => import("../pages/authentication/Register"))
-);
+const Registerages = Loadable(lazy(() => import("../pages/authentication/Register")));
 
 const MainRoutes = (): RouteObject => {
     return {

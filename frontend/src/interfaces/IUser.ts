@@ -1,5 +1,4 @@
 export interface UsersInterface {
-
     ID?: number;
 
     FirstName?: string;
@@ -17,6 +16,4 @@ export interface UsersInterface {
     GenderID?: number;
 
     Password?: string;
-
-
 }

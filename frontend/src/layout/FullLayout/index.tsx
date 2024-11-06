@@ -49,11 +49,7 @@ const FullLayout: React.FC = () => {
         <Layout style={{ minHeight: "100vh" }}>
             {contextHolder}
 
-            <Sider
-                collapsible
-                collapsed={collapsed}
-                onCollapse={(value) => setCollapsed(value)}
-            >
+            <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
                 <div
                     style={{
                         display: "flex",
@@ -77,22 +73,11 @@ const FullLayout: React.FC = () => {
                                 marginBottom: 20,
                             }}
                         >
-                            <img
-                                src={logo}
-                                alt="Logo"
-                                style={{ width: "80%" }}
-                            />
+                            <img src={logo} alt="Logo" style={{ width: "80%" }} />
                         </div>
 
-                        <Menu
-                            theme="dark"
-                            defaultSelectedKeys={[page ? page : "dashboard"]}
-                            mode="inline"
-                        >
-                            <Menu.Item
-                                key="dashboard"
-                                onClick={() => setCurrentPage("dashboard")}
-                            >
+                        <Menu theme="dark" defaultSelectedKeys={[page ? page : "dashboard"]} mode="inline">
+                            <Menu.Item key="dashboard" onClick={() => setCurrentPage("dashboard")}>
                                 <Link to="/">
                                     <DashboardOutlined />
 
@@ -100,10 +85,7 @@ const FullLayout: React.FC = () => {
                                 </Link>
                             </Menu.Item>
 
-                            <Menu.Item
-                                key="customer"
-                                onClick={() => setCurrentPage("customer")}
-                            >
+                            <Menu.Item key="customer" onClick={() => setCurrentPage("customer")}>
                                 <Link to="/customer">
                                     <UserOutlined />
 
@@ -139,22 +121,14 @@ const FullLayout: React.FC = () => {
 
                             <Route path="/customer" element={<Customer />} />
 
-                            <Route
-                                path="/customer/create"
-                                element={<CustomerCreate />}
-                            />
+                            <Route path="/customer/create" element={<CustomerCreate />} />
 
-                            <Route
-                                path="/customer/edit/:id"
-                                element={<CustomerEdit />}
-                            />
+                            <Route path="/customer/edit/:id" element={<CustomerEdit />} />
                         </Routes>
                     </div>
                 </Content>
 
-                <Footer style={{ textAlign: "center" }}>
-                    System Analysis and Design 1/67
-                </Footer>
+                <Footer style={{ textAlign: "center" }}>System Analysis and Design 1/67</Footer>
             </Layout>
         </Layout>
     );

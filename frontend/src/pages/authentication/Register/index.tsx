@@ -1,29 +1,40 @@
-import {
-    Button,
-    Card,
-    Form,
-    Input,
-    message,
-    Flex,
-    Row,
-    Col,
-    InputNumber,
-    DatePicker,
-    Select,
-} from "antd";
+import { Button, Card, Form, Input, message, Flex, Row, Col, InputNumber, DatePicker, Select } from "antd";
+
+import { useState, useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
 
-import { CreateUser } from "../../../services/https";
+import { GetGender, CreateUser } from "../../../services/https";
 
 import { UsersInterface } from "../../../interfaces/IUser";
 
 import logo from "../../../assets/logo.png";
+import { GenderInterface } from "../../../interfaces/IGender";
 
 function SignUpPages() {
     const navigate = useNavigate();
 
     const [messageApi, contextHolder] = message.useMessage();
+
+    const [gender, setGender] = useState<GenderInterface[]>([]);
+
+    const onGetGender = async () => {
+        let res = await GetGender();
+
+        if (res.status == 200) {
+            setGender(res.data);
+        } else {
+            messageApi.open({
+                type: "error",
+
+                content: "ไม่พบข้อมูลเพศ",
+            });
+
+            setTimeout(() => {
+                navigate("/customer");
+            }, 2000);
+        }
+    };
 
     const onFinish = async (values: UsersInterface) => {
         let res = await CreateUser(values);
@@ -47,6 +58,10 @@ function SignUpPages() {
         }
     };
 
+    useEffect(() => {
+        onGetGender();
+    }, [onGetGender]);
+
     return (
         <>
             {contextHolder}
@@ -55,30 +70,15 @@ function SignUpPages() {
                 <Card className="card-login" style={{ width: 600 }}>
                     <Row align={"middle"} justify={"center"}>
                         <Col xs={24} sm={24} md={24} lg={10} xl={10}>
-                            <img
-                                alt="logo"
-                                src={logo}
-                                className="images-logo"
-                            />
+                            <img alt="logo" src={logo} className="images-logo" />
                         </Col>
 
                         <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                             <h2 className="header">Sign Up</h2>
 
-                            <Form
-                                name="basic"
-                                layout="vertical"
-                                onFinish={onFinish}
-                                autoComplete="off"
-                            >
+                            <Form name="basic" layout="vertical" onFinish={onFinish} autoComplete="off">
                                 <Row gutter={[16, 0]} align={"middle"}>
-                                    <Col
-                                        xs={24}
-                                        sm={24}
-                                        md={24}
-                                        lg={24}
-                                        xl={24}
-                                    >
+                                    <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                                         <Form.Item
                                             label="ชื่อจริง"
                                             name="first_name"
@@ -94,13 +94,7 @@ function SignUpPages() {
                                         </Form.Item>
                                     </Col>
 
-                                    <Col
-                                        xs={24}
-                                        sm={24}
-                                        md={24}
-                                        lg={24}
-                                        xl={24}
-                                    >
+                                    <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                                         <Form.Item
                                             label="นามกสุล"
                                             name="last_name"
@@ -108,8 +102,7 @@ function SignUpPages() {
                                                 {
                                                     required: true,
 
-                                                    message:
-                                                        "กรุณากรอกนามสกุล !",
+                                                    message: "กรุณากรอกนามสกุล !",
                                                 },
                                             ]}
                                         >
@@ -117,13 +110,7 @@ function SignUpPages() {
                                         </Form.Item>
                                     </Col>
 
-                                    <Col
-                                        xs={24}
-                                        sm={24}
-                                        md={24}
-                                        lg={24}
-                                        xl={24}
-                                    >
+                                    <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                                         <Form.Item
                                             label="อีเมล"
                                             name="email"
@@ -131,8 +118,7 @@ function SignUpPages() {
                                                 {
                                                     type: "email",
 
-                                                    message:
-                                                        "รูปแบบอีเมลไม่ถูกต้อง !",
+                                                    message: "รูปแบบอีเมลไม่ถูกต้อง !",
                                                 },
 
                                                 {
@@ -146,13 +132,7 @@ function SignUpPages() {
                                         </Form.Item>
                                     </Col>
 
-                                    <Col
-                                        xs={24}
-                                        sm={24}
-                                        md={24}
-                                        lg={12}
-                                        xl={12}
-                                    >
+                                    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                                         <Form.Item
                                             label="รหัสผ่าน"
                                             name="password"
@@ -160,8 +140,7 @@ function SignUpPages() {
                                                 {
                                                     required: true,
 
-                                                    message:
-                                                        "กรุณากรอกรหัสผ่าน !",
+                                                    message: "กรุณากรอกรหัสผ่าน !",
                                                 },
                                             ]}
                                         >
@@ -169,13 +148,7 @@ function SignUpPages() {
                                         </Form.Item>
                                     </Col>
 
-                                    <Col
-                                        xs={24}
-                                        sm={24}
-                                        md={24}
-                                        lg={12}
-                                        xl={12}
-                                    >
+                                    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                                         <Form.Item
                                             label="วัน/เดือน/ปี เกิด"
                                             name="birthday"
@@ -183,24 +156,15 @@ function SignUpPages() {
                                                 {
                                                     required: true,
 
-                                                    message:
-                                                        "กรุณาเลือกวัน/เดือน/ปี เกิด !",
+                                                    message: "กรุณาเลือกวัน/เดือน/ปี เกิด !",
                                                 },
                                             ]}
                                         >
-                                            <DatePicker
-                                                style={{ width: "100%" }}
-                                            />
+                                            <DatePicker style={{ width: "100%" }} />
                                         </Form.Item>
                                     </Col>
 
-                                    <Col
-                                        xs={24}
-                                        sm={24}
-                                        md={24}
-                                        lg={12}
-                                        xl={12}
-                                    >
+                                    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                                         <Form.Item
                                             label="อายุ"
                                             name="age"
@@ -212,22 +176,11 @@ function SignUpPages() {
                                                 },
                                             ]}
                                         >
-                                            <InputNumber
-                                                min={0}
-                                                max={99}
-                                                defaultValue={0}
-                                                style={{ width: "100%" }}
-                                            />
+                                            <InputNumber min={0} max={99} defaultValue={0} style={{ width: "100%" }} />
                                         </Form.Item>
                                     </Col>
 
-                                    <Col
-                                        xs={24}
-                                        sm={24}
-                                        md={24}
-                                        lg={12}
-                                        xl={12}
-                                    >
+                                    <Col xs={24} sm={24} md={24} lg={12} xl={12}>
                                         <Form.Item
                                             label="เพศ"
                                             name="gender_id"
@@ -239,57 +192,15 @@ function SignUpPages() {
                                                 },
                                             ]}
                                         >
-                                            <Select
-                                                defaultValue=""
-                                                style={{ width: "100%" }}
-                                                options={[
-                                                    {
-                                                        value: "",
-                                                        label: "กรุณาเลือกเพศ",
-                                                        disabled: true,
-                                                    },
-
-                                                    { value: 1, label: "Male" },
-
-                                                    {
-                                                        value: 2,
-                                                        label: "Female",
-                                                    },
-                                                ]}
-                                            />
+                                            <Select defaultValue="" style={{ width: "100%" }}>
+                                                {gender?.map((item) => (
+                                                    <Select.Option value={item?.ID}>{item?.gender}</Select.Option>
+                                                ))}
+                                            </Select>
                                         </Form.Item>
                                     </Col>
 
-                                    <Col
-                                        xs={24}
-                                        sm={24}
-                                        md={12}
-                                        lg={12}
-                                        xl={12}
-                                    >
-                                        <Form.Item
-                                            label="เบอร์โทร"
-                                            name="phone"
-                                            rules={[
-                                                {
-                                                    required: true,
-
-                                                    message:
-                                                        "กรุณากรอกเบอร์โทร!",
-                                                },
-                                            ]}
-                                        >
-                                            <Input />
-                                        </Form.Item>
-                                    </Col>
-
-                                    <Col
-                                        xs={24}
-                                        sm={24}
-                                        md={24}
-                                        lg={24}
-                                        xl={24}
-                                    >
+                                    <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                                         <Form.Item>
                                             <Button
                                                 type="primary"
@@ -299,10 +210,7 @@ function SignUpPages() {
                                             >
                                                 Sign up
                                             </Button>
-                                            Or{" "}
-                                            <a onClick={() => navigate("/")}>
-                                                signin now !
-                                            </a>
+                                            Or <a onClick={() => navigate("/")}>signin now !</a>
                                         </Form.Item>
                                     </Col>
                                 </Row>

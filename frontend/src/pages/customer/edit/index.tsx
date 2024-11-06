@@ -1,25 +1,14 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
-import {
-    Space,
-    Button,
-    Col,
-    Row,
-    Divider,
-    Form,
-    Input,
-    Card,
-    message,
-    DatePicker,
-    InputNumber,
-    Select,
-} from "antd";
+import { Space, Button, Col, Row, Divider, Form, Input, Card, message, DatePicker, InputNumber, Select } from "antd";
 
 import { PlusOutlined } from "@ant-design/icons";
 
 import { UsersInterface } from "../../../interfaces/IUser";
 
-import { GetUsersById, UpdateUsersById } from "../../../services/https/index";
+import { GenderInterface } from "../../../interfaces/IGender";
+
+import { GetGender, GetUsersById, UpdateUsersById } from "../../../services/https/index";
 
 import { useNavigate, Link, useParams } from "react-router-dom";
 
@@ -32,7 +21,27 @@ function CustomerEdit() {
 
     const [messageApi, contextHolder] = message.useMessage();
 
+    const [gender, setGender] = useState<GenderInterface[]>([]);
+
     const [form] = Form.useForm();
+
+    const onGetGender = async () => {
+        let res = await GetGender();
+
+        if (res.status == 200) {
+            setGender(res.data);
+        } else {
+            messageApi.open({
+                type: "error",
+
+                content: "ไม่พบข้อมูลเพศ",
+            });
+
+            setTimeout(() => {
+                navigate("/customer");
+            }, 2000);
+        }
+    };
 
     const getUserById = async (id: string) => {
         let res = await GetUsersById(id);
@@ -91,6 +100,8 @@ function CustomerEdit() {
     };
 
     useEffect(() => {
+        onGetGender();
+
         getUserById(id);
     }, []);
 
@@ -103,13 +114,7 @@ function CustomerEdit() {
 
                 <Divider />
 
-                <Form
-                    name="basic"
-                    form={form}
-                    layout="vertical"
-                    onFinish={onFinish}
-                    autoComplete="off"
-                >
+                <Form name="basic" form={form} layout="vertical" onFinish={onFinish} autoComplete="off">
                     <Row gutter={[16, 0]}>
                         <Col xs={24} sm={24} md={24} lg={24} xl={12}>
                             <Form.Item
@@ -173,8 +178,7 @@ function CustomerEdit() {
                                     {
                                         required: true,
 
-                                        message:
-                                            "กรุณาเลือกวัน/เดือน/ปี เกิด !",
+                                        message: "กรุณาเลือกวัน/เดือน/ปี เกิด !",
                                     },
                                 ]}
                             >
@@ -194,12 +198,7 @@ function CustomerEdit() {
                                     },
                                 ]}
                             >
-                                <InputNumber
-                                    min={0}
-                                    max={99}
-                                    defaultValue={0}
-                                    style={{ width: "100%" }}
-                                />
+                                <InputNumber min={0} max={99} defaultValue={0} style={{ width: "100%" }} />
                             </Form.Item>
                         </Col>
 
@@ -215,37 +214,11 @@ function CustomerEdit() {
                                     },
                                 ]}
                             >
-                                <Select
-                                    defaultValue=""
-                                    style={{ width: "100%" }}
-                                    options={[
-                                        {
-                                            value: "",
-                                            label: "กรุณาเลือกเพศ",
-                                            disabled: true,
-                                        },
-
-                                        { value: 1, label: "Male" },
-
-                                        { value: 2, label: "Female" },
-                                    ]}
-                                />
-                            </Form.Item>
-                        </Col>
-
-                        <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-                            <Form.Item
-                                label="เบอร์โทร"
-                                name="phone"
-                                rules={[
-                                    {
-                                        required: true,
-
-                                        message: "กรุณาเบอร์โทร !",
-                                    },
-                                ]}
-                            >
-                                <Input />
+                                <Select defaultValue="" style={{ width: "100%" }}>
+                                    {gender?.map((item) => (
+                                        <Select.Option value={item?.ID}>{item?.gender}</Select.Option>
+                                    ))}
+                                </Select>
                             </Form.Item>
                         </Col>
                     </Row>
@@ -255,19 +228,12 @@ function CustomerEdit() {
                             <Form.Item>
                                 <Space>
                                     <Link to="/customer">
-                                        <Button
-                                            htmlType="button"
-                                            style={{ marginRight: "10px" }}
-                                        >
+                                        <Button htmlType="button" style={{ marginRight: "10px" }}>
                                             ยกเลิก
                                         </Button>
                                     </Link>
 
-                                    <Button
-                                        type="primary"
-                                        htmlType="submit"
-                                        icon={<PlusOutlined />}
-                                    >
+                                    <Button type="primary" htmlType="submit" icon={<PlusOutlined />}>
                                         บันทึก
                                     </Button>
                                 </Space>

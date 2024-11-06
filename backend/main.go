@@ -1,13 +1,9 @@
 package main
 
-
 import (
-
 	"net/http"
 
-
 	"github.com/gin-gonic/gin"
-
 
 	"example.com/sa-67-example/config"
 
@@ -16,7 +12,6 @@ import (
 	"example.com/sa-67-example/controller/users"
 
 	"example.com/sa-67-example/middlewares"
-
 )
 
 
@@ -26,64 +21,64 @@ const PORT = "8000"
 func main() {
 
 
-	// open connection database
+   // open connection database
 
-	config.ConnectionDB()
-
-
-	// Generate databases
-
-	config.SetupDatabase()
+config.ConnectionDB()
 
 
-	r := gin.Default()
+   // Generate databases
+
+config.SetupDatabase()
 
 
-	r.Use(CORSMiddleware())
+   r := gin.Default()
 
 
-	// Auth Route
-
-	r.POST("/signup", users.SignUp)
-
-	r.POST("/signin", users.SignIn)
+   r.Use(CORSMiddleware())
 
 
-	router := r.Group("/")
+   // Auth Route
 
-	{
+   r.POST("/signup", users.SignUp)
 
-		router.Use(middlewares.Authorizes())
-
-
-		// User Route
-
-		router.PUT("/user/:id", users.Update)
-
-		router.GET("/users", users.GetAll)
-
-		router.GET("/user/:id", users.Get)
-
-		router.DELETE("/user/:id", users.Delete)
+   r.POST("/signin", users.SignIn)
 
 
-	}
+   router := r.Group("/")
+
+   {
+
+       router.Use(middlewares.Authorizes())
 
 
-	r.GET("/genders", genders.GetAll)
+       // User Route
+
+       router.PUT("/user/:id", users.Update)
+
+       router.GET("/users", users.GetAll)
+
+       router.GET("/user/:id", users.Get)
+
+       router.DELETE("/user/:id", users.Delete)
 
 
-	r.GET("/", func(c *gin.Context) {
-
-		c.String(http.StatusOK, "API RUNNING... PORT: %s", PORT)
-
-	})
+   }
 
 
-	// Run the server
+   r.GET("/genders", genders.GetAll)
 
 
-	r.Run("localhost:" + PORT)
+   r.GET("/", func(c *gin.Context) {
+
+       c.String(http.StatusOK, "API RUNNING... PORT: %s", PORT)
+
+   })
+
+
+   // Run the server
+
+
+   r.Run("localhost:" + PORT)
 
 
 }
@@ -91,28 +86,28 @@ func main() {
 
 func CORSMiddleware() gin.HandlerFunc {
 
-	return func(c *gin.Context) {
+   return func(c *gin.Context) {
 
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+       c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 
-		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+       c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+       c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
 
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE")
-
-
-		if c.Request.Method == "OPTIONS" {
-
-			c.AbortWithStatus(204)
-
-			return
-
-		}
+       c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE")
 
 
-		c.Next()
+       if c.Request.Method == "OPTIONS" {
 
-	}
+           c.AbortWithStatus(204)
+
+           return
+
+       }
+
+
+       c.Next()
+
+   }
 
 }

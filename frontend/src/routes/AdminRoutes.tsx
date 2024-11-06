@@ -2,9 +2,8 @@ import { lazy } from "react";
 
 import { RouteObject } from "react-router-dom";
 
-import Loadable from "../components/third-party/Loadable";
-
 import FullLayout from "../layout/FullLayout";
+import Loadable from "../components/third-party/Loadable";
 
 const MainPages = Loadable(lazy(() => import("../pages/authentication/Login")));
 

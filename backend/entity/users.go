@@ -17,5 +17,5 @@ type Users struct {
 	GenderID  uint      `json:"gender_id"`
 	Gender    *Genders  `gorm:"foreignKey: gender_id" json:"gender"`
 	//add
-	Phone  string     `json:"phone"`
+	// Phone  string     `json:"phone"`
 }

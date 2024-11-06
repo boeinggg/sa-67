@@ -52,7 +52,7 @@ type (
 		GenderID  uint      `json:"gender_id"`
 
 		// add
-		Phone  string     `json:"phone"`
+		// Phone  string     `json:"phone"`
 
 	}
 
@@ -128,7 +128,7 @@ func SignUp(c *gin.Context) {
 
 		// add
 
-		Phone: payload.Phone,
+		// Phone: payload.Phone,
 
 	}
 

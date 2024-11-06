@@ -1,11 +1,6 @@
 import { Col, Row, Card, Statistic, Table } from "antd";
 
-import {
-    AuditOutlined,
-    UserOutlined,
-    PieChartOutlined,
-    StockOutlined,
-} from "@ant-design/icons";
+import { AuditOutlined, UserOutlined, PieChartOutlined, StockOutlined } from "@ant-design/icons";
 
 import type { ColumnsType } from "antd/es/table";
 
@@ -80,15 +75,10 @@ export default function index() {
                                 <Card
                                     bordered={false}
                                     style={{
-                                        boxShadow:
-                                            "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+                                        boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
                                     }}
                                 >
-                                    <Statistic
-                                        title="จำนวน"
-                                        value={1800}
-                                        prefix={<StockOutlined />}
-                                    />
+                                    <Statistic title="จำนวน" value={1800} prefix={<StockOutlined />} />
                                 </Card>
                             </Col>
 
@@ -96,16 +86,10 @@ export default function index() {
                                 <Card
                                     bordered={false}
                                     style={{
-                                        boxShadow:
-                                            "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+                                        boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
                                     }}
                                 >
-                                    <Statistic
-                                        title="จำนวน"
-                                        value={200}
-                                        valueStyle={{ color: "black" }}
-                                        prefix={<AuditOutlined />}
-                                    />
+                                    <Statistic title="จำนวน" value={200} valueStyle={{ color: "black" }} prefix={<AuditOutlined />} />
                                 </Card>
                             </Col>
 
@@ -113,16 +97,10 @@ export default function index() {
                                 <Card
                                     bordered={false}
                                     style={{
-                                        boxShadow:
-                                            "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+                                        boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
                                     }}
                                 >
-                                    <Statistic
-                                        title="จำนวน"
-                                        value={3000}
-                                        valueStyle={{ color: "black" }}
-                                        prefix={<PieChartOutlined />}
-                                    />
+                                    <Statistic title="จำนวน" value={3000} valueStyle={{ color: "black" }} prefix={<PieChartOutlined />} />
                                 </Card>
                             </Col>
 
@@ -130,16 +108,10 @@ export default function index() {
                                 <Card
                                     bordered={false}
                                     style={{
-                                        boxShadow:
-                                            "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+                                        boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
                                     }}
                                 >
-                                    <Statistic
-                                        title="จำนวน"
-                                        value={10}
-                                        valueStyle={{ color: "black" }}
-                                        prefix={<UserOutlined />}
-                                    />
+                                    <Statistic title="จำนวน" value={10} valueStyle={{ color: "black" }} prefix={<UserOutlined />} />
                                 </Card>
                             </Col>
                         </Row>

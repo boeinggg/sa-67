@@ -1,6 +1,5 @@
 package users
 
-
 import (
 	"net/http"
 
@@ -9,54 +8,62 @@ import (
 	"example.com/sa-67-example/config"
 
 	"example.com/sa-67-example/entity"
-
 )
 
 
 func GetAll(c *gin.Context) {
 
-	var users []entity.Users
 
-	db := config.DB()
+   var users []entity.Users
 
-	results := db.Preload("Gender").Find(&users)
 
-	if results.Error != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
+   db := config.DB()
 
-		return
+   results := db.Preload("Gender").Find(&users)
 
-	}
+   if results.Error != nil {
 
-	c.JSON(http.StatusOK, users)
+       c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
+
+       return
+
+   }
+
+   c.JSON(http.StatusOK, users)
+
+
 }
 
 
 func Get(c *gin.Context) {
 
-	ID := c.Param("id")
 
-	var user entity.Users
+   ID := c.Param("id")
 
-	db := config.DB()
+   var user entity.Users
 
-	results := db.Preload("Gender").First(&user, ID)
 
-	if results.Error != nil {
+   db := config.DB()
 
-	c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
-	return
-}
+   results := db.Preload("Gender").First(&user, ID)
 
-	if user.ID == 0 {
+   if results.Error != nil {
 
-		c.JSON(http.StatusNoContent, gin.H{})
+       c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
 
-		return
+       return
 
-	}
+   }
 
-	c.JSON(http.StatusOK, user)
+   if user.ID == 0 {
+
+       c.JSON(http.StatusNoContent, gin.H{})
+
+       return
+
+   }
+
+   c.JSON(http.StatusOK, user)
 
 
 }
@@ -64,61 +71,66 @@ func Get(c *gin.Context) {
 
 func Update(c *gin.Context) {
 
-	var user entity.Users
 
-	UserID := c.Param("id")
-
-	db := config.DB()
-
-	result := db.First(&user, UserID)
-
-	if result.Error != nil {
-
-		c.JSON(http.StatusNotFound, gin.H{"error": "id not found"})
-
-		return
-
-	}
+   var user entity.Users
 
 
-	if err := c.ShouldBindJSON(&user); err != nil {
-
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request, unable to map payload"})
-
-		return
-	}
+   UserID := c.Param("id")
 
 
-	result = db.Save(&user)
+   db := config.DB()
 
-	if result.Error != nil {
+   result := db.First(&user, UserID)
 
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request"})
+   if result.Error != nil {
 
-		return
+       c.JSON(http.StatusNotFound, gin.H{"error": "id not found"})
 
-	}
+       return
+
+   }
 
 
-	c.JSON(http.StatusOK, gin.H{"message": "Updated successful"})
+   if err := c.ShouldBindJSON(&user); err != nil {
+
+       c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request, unable to map payload"})
+
+       return
+
+   }
+
+
+   result = db.Save(&user)
+
+   if result.Error != nil {
+
+       c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request"})
+
+       return
+
+   }
+
+
+   c.JSON(http.StatusOK, gin.H{"message": "Updated successful"})
 
 }
 
 
 func Delete(c *gin.Context) {
 
-	id := c.Param("id")
 
-	db := config.DB()
+   id := c.Param("id")
 
-	if tx := db.Exec("DELETE FROM users WHERE id = ?", id); tx.RowsAffected == 0 {
+   db := config.DB()
 
-		c.JSON(http.StatusBadRequest, gin.H{"error": "id not found"})
+   if tx := db.Exec("DELETE FROM users WHERE id = ?", id); tx.RowsAffected == 0 {
 
-		return
+       c.JSON(http.StatusBadRequest, gin.H{"error": "id not found"})
 
-	}
+       return
 
-	c.JSON(http.StatusOK, gin.H{"message": "Deleted successful"})
+   }
+
+   c.JSON(http.StatusOK, gin.H{"message": "Deleted successful"})
 
 }

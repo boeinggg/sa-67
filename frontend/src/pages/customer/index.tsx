@@ -32,12 +32,7 @@ function Customers() {
                     {myId == record?.ID ? (
                         <></>
                     ) : (
-                        <Button
-                            type="dashed"
-                            danger
-                            icon={<DeleteOutlined />}
-                            onClick={() => deleteUserById(record.ID)}
-                        ></Button>
+                        <Button type="dashed" danger icon={<DeleteOutlined />} onClick={() => deleteUserById(record.ID)}></Button>
                     )}
                 </>
             ),
@@ -80,9 +75,7 @@ function Customers() {
 
             key: "birthday",
 
-            render: (record) => (
-                <>{dayjs(record.birthday).format("DD/MM/YYYY")}</>
-            ),
+            render: (record) => <>{dayjs(record.birthday).format("DD/MM/YYYY")}</>,
         },
 
         {
@@ -102,23 +95,11 @@ function Customers() {
         },
 
         {
-            title: "เบอร์โทร",
-
-            dataIndex: "phone",
-
-            key: "phone",
-        },
-
-        {
             title: "",
 
             render: (record) => (
                 <>
-                    <Button
-                        type="primary"
-                        icon={<DeleteOutlined />}
-                        onClick={() => navigate(`/customer/edit/${record.ID}`)}
-                    >
+                    <Button type="primary" icon={<DeleteOutlined />} onClick={() => navigate(`/customer/edit/${record.ID}`)}>
                         แก้ไขข้อมูล
                     </Button>
                 </>
@@ -175,10 +156,7 @@ function Customers() {
                     <h2>จัดการข้อมูลสมาชิก</h2>
                 </Col>
 
-                <Col
-                    span={12}
-                    style={{ textAlign: "end", alignSelf: "center" }}
-                >
+                <Col span={12} style={{ textAlign: "end", alignSelf: "center" }}>
                     <Space>
                         <Link to="/customer/create">
                             <Button type="primary" icon={<PlusOutlined />}>
@@ -192,13 +170,7 @@ function Customers() {
             <Divider />
 
             <div style={{ marginTop: 20 }}>
-                <Table
-                    rowKey="ID"
-                    columns={columns}
-                    dataSource={users}
-                    style={{ width: "100%", overflow: "scroll" }}
-                    // style={{ width: "100%", overflow: "scroll" }} scroll ทำให้เลื่อน
-                />
+                <Table rowKey="ID" columns={columns} dataSource={users} style={{ width: "100%", overflow: "scroll" }} />
             </div>
         </>
     );
